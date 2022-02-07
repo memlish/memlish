@@ -1,0 +1,19 @@
+---
+version: '3'
+services:
+  memlish-jupyter:
+    mem_limit: 15gb
+    env_file: /home/cont/memlish.env
+    runtime: nvidia
+    build:
+      context: .
+      dockerfile: ./Dockerfile.cuda
+    restart: unless-stopped
+    container_name: memlish-jupyter
+    ports:
+      - "0.0.0.0:7776:7776"
+    volumes:
+      - "./:/app"
+      - "~/data:/data"
+    command: >
+      jupyter lab --port=7776 --ip=0.0.0.0 --no-browser --allow-root --notebook-dir="/app"

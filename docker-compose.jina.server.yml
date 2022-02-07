@@ -1,0 +1,22 @@
+---
+version: '3'
+services:
+  memlish-jina-search:
+    env_file: /home/cont/memlish.env
+    # runtime: nvidia
+    build:
+      context: .
+      dockerfile: ./Dockerfile.cuda
+    restart: unless-stopped
+    container_name: memlish-jina-search
+    ports:
+      - "0.0.0.0:7070:7070"
+    volumes:
+      - "./:/app"
+      - ./loopa/loopa/:/app/loopa
+      - "~/data:/data"
+
+    working_dir: /app
+    
+    command: >
+      python /app/apps/jina.server/main.py --port 7070

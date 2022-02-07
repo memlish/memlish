@@ -1,0 +1,46 @@
+---
+version: '3'
+services:
+  memlish:
+    env_file:
+      - ~/memlish.env
+    build:
+      context: .
+      dockerfile: ./Dockerfile.cuda
+    restart: unless-stopped
+    container_name: memlish
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10M"
+        max-file: "10"
+
+    ports:
+      - "7654:7654"
+    volumes:
+      - "./:/app"
+
+    working_dir: /app
+
+    command: >
+      gunicorn apps.bot.main:my_web_app --workers 1 --bind 0.0.0.0:7654 --worker-class aiohttp.GunicornWebWorker
+
+  nginx: 
+    image: nginx:latest
+    env_file:
+      - ~/memlish.env
+    logging:
+      driver: none
+    container_name: production_nginx
+    volumes:
+      - ./infrastructure/nginx/conf.d/:/nginx_confs/
+      - ./infrastructure/nginx/certs/:/certs/
+      - ~/data/reddit/images/images/:/public/static_memes/
+      # - ~/data/memlish/static_memes/:/public/static_memes/
+    ports:
+      # - 7077:80
+      # - 7078:443
+      - 80:80
+      - 443:443
+    command: /bin/bash -c "envsubst < /nginx_confs/nginx.conf > /etc/nginx/conf.d/nginx.conf && nginx -g 'daemon off;'" 

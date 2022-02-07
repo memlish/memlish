@@ -1,0 +1,3 @@
+[submodule "loopa"]
+	path = loopa
+	url = https://github.com/memlish/loopa.git

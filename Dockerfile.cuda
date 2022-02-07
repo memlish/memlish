@@ -1,0 +1,25 @@
+FROM pytorch/pytorch:1.10.0-cuda11.3-cudnn8-runtime
+
+USER root
+RUN mkdir /app
+
+RUN apt-get clean
+RUN apt-get update -y
+RUN apt-get install -y git
+RUN apt-get install -y curl
+RUN apt-get install -y build-essential
+RUN apt-get install zip unzip
+
+# # cv2 requirements
+RUN apt-get install ffmpeg libsm6 libxext6  -y 
+
+# install requirements
+COPY ./requirements.txt /.
+RUN pip install -r /requirements.txt --no-cache-dir
+# --- ---
+
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
+
+# Empty the ENTRYPOINT to allow all commands
+ENTRYPOINT []
