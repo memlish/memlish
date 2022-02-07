@@ -13,7 +13,11 @@ To run bot you should run such services:
 
 ## How to run server:
 
-`docker-compose --env-file ~/memlish.env -f docker-compose.jina.server.yml up --build`
+`docker-compose --env-file ~/memlish.env -f docker-compose.jina.server.yml up --build -d`
+
+## How to run bot:
+
+`docker-compose -f docker-compose.tgbot.yml up --build -d`
 
 ## memlish.env
 

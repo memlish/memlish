@@ -11,7 +11,7 @@ def _get_bool(key: str) -> bool:
 BOT_TOKEN = os.environ['BOT_TOKEN']
 SERVER_NAME = os.environ['SERVER_NAME']
 USE_POLLING = _get_bool('USE_POLLING')
-SHOW_K_MEMES = 20
+SHOW_K_MEMES = 50
 
 # SERVER ENV VARS
 
