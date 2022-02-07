@@ -15,6 +15,8 @@ SHOW_K_MEMES = 20
 
 # SERVER ENV VARS
 
+JINA_FLOW_PORT = os.environ['JINA_FLOW_PORT']
+
 PUBLIC_FILES_URL = f"http://{SERVER_NAME}/static_memes/"
 
 IMAGE_DIR = Path('/data/reddit/images/images/')

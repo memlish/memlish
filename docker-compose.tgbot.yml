@@ -37,10 +37,7 @@ services:
       - ./infrastructure/nginx/conf.d/:/nginx_confs/
       - ./infrastructure/nginx/certs/:/certs/
       - ~/data/reddit/images/images/:/public/static_memes/
-      # - ~/data/memlish/static_memes/:/public/static_memes/
     ports:
-      # - 7077:80
-      # - 7078:443
       - 80:80
       - 443:443
     command: /bin/bash -c "envsubst < /nginx_confs/nginx.conf > /etc/nginx/conf.d/nginx.conf && nginx -g 'daemon off;'" 

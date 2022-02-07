@@ -1,12 +1,13 @@
 import sys
 sys.path.append('/app')  # noqa
+sys.path.append('/app/loopa')  # noqa
 
 from jina import Document, DocumentArray, Flow, Executor, requests
 from pathlib import Path
 import argparse
 from loopa.executors.clip import CLIPTextEncoder
 from loopa.executors.index import FaissIndexer, IndexMerger
-from config import IMAGE_DIR, JINA_EMBS_COLLECTION_NAME, EMBEDDER_PARAMS
+from memlish.config import IMAGE_DIR, JINA_EMBS_COLLECTION_NAME, EMBEDDER_PARAMS
 import torch
 
 

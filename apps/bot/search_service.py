@@ -1,4 +1,8 @@
+import sys
+sys.path.append('/app')  # noqa
+
 import requests
+from memlish.config import JINA_FLOW_PORT, SERVER_NAME
 
 
 def search(text, top_k=10):
@@ -14,7 +18,8 @@ def search(text, top_k=10):
         },
     }
 
-    r = requests.post('http://35.224.116.253:7070/search', json=payload)
+    r = requests.post(
+        f'http://{SERVER_NAME}:{JINA_FLOW_PORT}/search', json=payload)
     response = r.json()
 
     req_docs = response['data']['docs'][0]['matches']
