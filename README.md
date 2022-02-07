@@ -2,7 +2,7 @@
 
 ## Pull:
 
-```git clone https://github.com/memlish/loopa.git --recurse-submodules```
+```git clone https://github.com/memlish/memlish.git --recurse-submodules```
 
 ## What should be up and run:
 
