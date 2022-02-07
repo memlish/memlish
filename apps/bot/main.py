@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/app')  # noqa
+
 import logging
 import os
 from uuid import uuid4
@@ -7,19 +10,12 @@ from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram import Bot, Dispatcher
 from aiogram.dispatcher.webhook import SendMessage,  AnswerInlineQuery
 from aiogram.types import InlineQuery, InlineQueryResultPhoto
+from aiogram.utils.executor import set_webhook, DEFAULT_ROUTE_NAME, Executor, _setup_callbacks
+from aiogram.dispatcher.webhook import WebhookRequestHandler
 
 from .search_service import search
+from memlish.config import BOT_TOKEN, PUBLIC_FILES_URL, USE_POLLING, SHOW_K_MEMES
 
-
-def _get_bool(key: str) -> bool:
-    return os.environ.get(key, 'False').lower() in ('true', '1', 't')
-
-
-BOT_TOKEN = os.environ['BOT_TOKEN']
-SERVER_NAME = os.environ['SERVER_NAME']
-USE_POLLING = _get_bool('USE_POLLING')
-
-PUBLIC_FILES_URL = f"http://{SERVER_NAME}/static_memes/"
 
 logging.basicConfig(level=logging.INFO,
                     format=f'%(asctime)s [worker_pid={os.getpid()}] %(message)s')
@@ -45,7 +41,7 @@ async def inline_echo(inline_query: InlineQuery):
     if not query:
         return
 
-    search_docs_res = search(query, 10)
+    search_docs_res = search(query, SHOW_K_MEMES)
 
     results = [
         InlineQueryResultPhoto(
@@ -68,9 +64,6 @@ async def inline_echo(inline_query: InlineQuery):
 
 async def my_web_app():
     logging.warning(f'Hello there from {os.getpid()}')
-
-    from aiogram.utils.executor import set_webhook, DEFAULT_ROUTE_NAME, Executor, _setup_callbacks
-    from aiogram.dispatcher.webhook import WebhookRequestHandler
 
     dispatcher = dp
     webhook_path = f'/{BOT_TOKEN}'  # TODO: do we really need it?
