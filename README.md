@@ -1,5 +1,11 @@
 # memlish
 
+## Pull:
+
+```git clone https://github.com/memlish/loopa.git --recurse-submodules```
+
+## What should be up and run:
+
 To run bot you should run such services:
 
 1) Run jina server: `docker-compose.jina.server.yml`
