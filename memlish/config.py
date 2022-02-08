@@ -8,6 +8,11 @@ def _get_bool(key: str) -> bool:
 # BOT ENV VARS
 
 
+class ESTag:
+    INLINE_CHOICE = "INLINE_CHOICE"
+    INLINE_ANSWER = "INLINE_ANSWER"
+
+
 BOT_TOKEN = os.environ['BOT_TOKEN']
 SERVER_NAME = os.environ['SERVER_NAME']
 USE_POLLING = _get_bool('USE_POLLING')

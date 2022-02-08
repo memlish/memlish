@@ -14,7 +14,7 @@ from aiogram.utils.executor import set_webhook, DEFAULT_ROUTE_NAME, Executor, _s
 from aiogram.dispatcher.webhook import WebhookRequestHandler
 
 from .search_service import search
-from memlish.config import BOT_TOKEN, PUBLIC_FILES_URL, USE_POLLING, SHOW_K_MEMES
+from memlish.config import BOT_TOKEN, PUBLIC_FILES_URL, USE_POLLING, SHOW_K_MEMES, ESTag
 
 
 logging.basicConfig(level=logging.INFO,
@@ -34,6 +34,14 @@ async def on_shutdown(dp):
     logging.warning('Bye!')
 
 
+@dp.chosen_inline_handler(lambda chosen_inline_query: True)
+async def chosen_inline_handler(chosen_inline_query: types.ChosenInlineResult):
+    print({
+        'es_tag': ESTag.INLINE_CHOICE,
+        'update': str(chosen_inline_query),
+    })
+
+
 @dp.inline_handler()
 async def inline_echo(inline_query: InlineQuery):
     query = inline_query.query
@@ -43,9 +51,11 @@ async def inline_echo(inline_query: InlineQuery):
 
     search_docs_res = search(query, SHOW_K_MEMES)
 
+    uniq_candidates_id = str(uuid4())
+
     results = [
         InlineQueryResultPhoto(
-            id=str(uuid4()),
+            id=f"{str(match['id'])}__{uniq_candidates_id}",
             photo_url=f"{PUBLIC_FILES_URL}{match['id']}",
             thumb_url=f"{PUBLIC_FILES_URL}{match['id']}",
             photo_width=100,
@@ -54,6 +64,7 @@ async def inline_echo(inline_query: InlineQuery):
         for match in search_docs_res
     ]
     print({
+        'es_tag': ESTag.INLINE_ANSWER,
         'update': str(inline_query),
         'template_options': [r.id for r in results]
     })

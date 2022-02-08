@@ -11,10 +11,10 @@ services:
     container_name: memlish
 
     logging:
-      driver: "json-file"
+      driver: "fluentd"
       options:
-        max-size: "10M"
-        max-file: "10"
+        fluentd-address: 35.224.116.253:7030
+        tag: httpd.access
 
     ports:
       - "7654:7654"
