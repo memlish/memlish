@@ -7,7 +7,6 @@ from uuid import uuid4
 
 
 class TextDrawer(Executor):
-    """Encode text into embeddings using SBERT model."""
 
     def __init__(
         self,
@@ -22,12 +21,15 @@ class TextDrawer(Executor):
         """
         super().__init__(*args, **kwargs)
         self.drawer = DefaultTextDrawer(font_path, font_size)
-        self.out_path = out_path
+        self.out_path = Path(out_path)
         if not self.out_path.exists():
             self.out_path.mkdir(parents=True, exist_ok=True)
 
     @requests
     def add_text(self, docs: Optional[DocumentArray], parameters: Dict = {}, **kwargs):
+        """
+        Note, it works only with doc.matcher
+        """
         if docs is None:
             return
 
@@ -38,8 +40,10 @@ class TextDrawer(Executor):
         results_dir.mkdir(parents=True, exist_ok=True)
 
         for doc in docs:
-            result_image = self.drawer.add_text(Path(
-                doc.uri), '.', max_width=max_width, max_height=max_height)  # TODO: add doc.text here!
-            result_image_path = results_dir / Path(doc.uri).name
-            result_image.save(result_image_path)
-            doc.uri = str(result_image_path)
+            for match in doc.matches:
+                print("doc.uri", match.uri)
+                result_image = self.drawer.add_text(Path(
+                    match.uri), 'AHAHAHAHAHAHHAHAHAHAHAH', max_width=max_width, max_height=max_height)  # TODO: add doc.text here!
+                result_image_path = results_dir / Path(match.uri).name
+                result_image.save(result_image_path)
+                match.uri = str(result_image_path)
