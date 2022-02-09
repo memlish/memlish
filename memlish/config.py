@@ -32,3 +32,5 @@ EMBEDDER_PARAMS = {
     "batch_size": 64,
     "device": 'cuda'
 }
+
+FONTS_PATH = Path('/app/memlish/image_processing/fonts')
