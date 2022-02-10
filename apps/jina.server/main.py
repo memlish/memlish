@@ -5,9 +5,11 @@ sys.path.append('/app/loopa')  # noqa
 from jina import Document, DocumentArray, Flow, Executor, requests
 from pathlib import Path
 import argparse
-from loopa.executors.clip import CLIPTextEncoder
-from loopa.executors.index import FaissIndexer, IndexMerger
-from memlish.config import IMAGE_DIR, JINA_EMBS_COLLECTION_NAME, EMBEDDER_PARAMS
+from loopa.executors.bert import SBERTEncoder
+from memlish.executors.index import FaissIndexer
+from memlish.executors.docs_formatter import DocsFormatter
+from memlish.config import IMGFLIP_IMAGES_DIR, DROWN_IMAGE_DIR, JINA_SBERT_EMBEDDING_TEMPLATE_TEXT_COLLECTION
+from memlish.executors.text_drawer import TextDrawer
 import torch
 
 
@@ -32,14 +34,23 @@ def main():
     args = parse_args()
     print('args', args)
 
-    faiss_indexer_params = {
-        "reference_img_dir": str(IMAGE_DIR),
-        "collection_name": JINA_EMBS_COLLECTION_NAME
+    embedder_params = {
+        "device": 'cuda'
     }
 
-    flow_search = Flow().add(uses=CLIPTextEncoder, name=f"CLIPTextEncoder", uses_with=EMBEDDER_PARAMS, needs='gateway')\
-                        .add(uses=FaissIndexer, name=f"FaissIndexer", workspace="workspace", uses_with=faiss_indexer_params)\
-                        .needs_all(uses=IndexMerger, name="merger")
+    faiss_indexer_params = {
+        "reference_img_dir": str(IMGFLIP_IMAGES_DIR),
+        "collection_name": JINA_SBERT_EMBEDDING_TEMPLATE_TEXT_COLLECTION
+    }
+
+    drawer_params = {
+        "out_path": str(DROWN_IMAGE_DIR)
+    }
+
+    flow_search = Flow().add(uses=SBERTEncoder, name="encoder", uses_with=embedder_params) \
+                        .add(uses=FaissIndexer, name="indexer", workspace="workspace", uses_with=faiss_indexer_params) \
+                        .add(uses=TextDrawer, name=f"drawer", uses_with=drawer_params) \
+                        .add(uses=DocsFormatter, name="formatter")
 
     flow_search.port_expose = args.port
     flow_search.protocol = 'http'

@@ -4,6 +4,7 @@ from pathlib import Path
 from memlish.config import FONTS_PATH
 from memlish.image_processing.text_drawer import DefaultTextDrawer
 from uuid import uuid4
+import time
 
 
 class TextDrawer(Executor):
@@ -33,6 +34,8 @@ class TextDrawer(Executor):
         if docs is None:
             return
 
+        start = time.time()
+
         max_width = int(parameters.get("max_width", 256))
         max_height = int(parameters.get("max_height", 256))
 
@@ -41,9 +44,12 @@ class TextDrawer(Executor):
 
         for doc in docs:
             for match in doc.matches:
-                print("doc.uri", match.uri)
                 result_image = self.drawer.add_text(Path(
-                    match.uri), 'AHAHAHAHAHAHHAHAHAHAHAH', max_width=max_width, max_height=max_height)  # TODO: add doc.text here!
+                    match.uri), doc.text, max_width=max_width, max_height=max_height)  # TODO: add doc.text here!
                 result_image_path = results_dir / Path(match.uri).name
                 result_image.save(result_image_path)
                 match.uri = str(result_image_path)
+
+        end = time.time()
+
+        print("TextDrawer time: end - start = ", end - start)

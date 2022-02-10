@@ -13,8 +13,10 @@ from aiogram.types import InlineQuery, InlineQueryResultPhoto
 from aiogram.utils.executor import set_webhook, DEFAULT_ROUTE_NAME, Executor, _setup_callbacks
 from aiogram.dispatcher.webhook import WebhookRequestHandler
 
+import hashlib
+
 from .search_service import search
-from memlish.config import BOT_TOKEN, PUBLIC_FILES_URL, USE_POLLING, SHOW_K_MEMES, ESTag
+from memlish.config import BOT_TOKEN, USE_POLLING, SHOW_K_MEMES, ESTag
 
 
 logging.basicConfig(level=logging.INFO,
@@ -23,6 +25,10 @@ logging.basicConfig(level=logging.INFO,
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(bot)
 dp.middleware.setup(LoggingMiddleware())
+
+
+def my_hash(s):
+    return str(int(hashlib.md5(str(s).encode('utf-8')).hexdigest(), 16))
 
 
 async def on_startup(dp):
@@ -51,22 +57,22 @@ async def inline_echo(inline_query: InlineQuery):
 
     search_docs_res = search(query, SHOW_K_MEMES)
 
-    uniq_candidates_id = str(uuid4())
+    uniq_candidates_id = my_hash(query)
 
     results = [
         InlineQueryResultPhoto(
-            id=f"{str(match['id'])}__{uniq_candidates_id}",
-            photo_url=f"{PUBLIC_FILES_URL}{match['id']}",
-            thumb_url=f"{PUBLIC_FILES_URL}{match['id']}",
+            id=f"{i}_{uniq_candidates_id}",
+            photo_url=f"{match['tags']['image_url']}",
+            thumb_url=f"{match['tags']['image_url']}",
             photo_width=100,
             photo_height=100,
         )
-        for match in search_docs_res
+        for i, match in enumerate(search_docs_res)
     ]
     print({
         'es_tag': ESTag.INLINE_ANSWER,
         'update': str(inline_query),
-        'template_options': [r.id for r in results]
+        'template_options': [{"id": r.id, "image_url": r.photo_url} for r in results]
     })
 
     # don't forget to set cache_time=1 for testing (default is 300s or 5m)

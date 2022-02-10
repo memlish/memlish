@@ -2,6 +2,7 @@
 version: '3.3'
 services:
   memlish-jina-search-server:
+    mem_limit: 18g
     env_file: 
       - /home/cont/memlish.env
     runtime: nvidia
