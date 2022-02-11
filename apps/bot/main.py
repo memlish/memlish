@@ -16,7 +16,7 @@ from aiogram.dispatcher.webhook import WebhookRequestHandler
 import hashlib
 
 from .search_service import search
-from memlish.config import BOT_TOKEN, USE_POLLING, SHOW_K_MEMES, ESTag
+from memlish.config import BOT_TOKEN, USE_POLLING, SHOW_K_MEMES, ESTag, WEBHOOK_SSL_CERT_PATH, WEBHOOK_URL, WEBHOOK_PATH
 
 
 logging.basicConfig(level=logging.INFO,
@@ -33,6 +33,17 @@ def my_hash(s):
 
 async def on_startup(dp):
     pass
+    # # Get current webhook status
+    # webhook = await bot.get_webhook_info()
+
+    # # If URL is bad
+    # if webhook.url != WEBHOOK_URL:
+    #     # If URL doesnt match current - remove webhook
+    #     if not webhook.url:
+    #         await bot.delete_webhook()
+
+    #     # Set new URL for webhook
+    #     await bot.set_webhook(WEBHOOK_URL, certificate=open(str(WEBHOOK_SSL_CERT_PATH), 'rb'))
 
 
 async def on_shutdown(dp):
@@ -40,7 +51,7 @@ async def on_shutdown(dp):
     logging.warning('Bye!')
 
 
-@dp.chosen_inline_handler(lambda chosen_inline_query: True)
+@ dp.chosen_inline_handler(lambda chosen_inline_query: True)
 async def chosen_inline_handler(chosen_inline_query: types.ChosenInlineResult):
     print({
         'es_tag': ESTag.INLINE_CHOICE,
@@ -48,14 +59,14 @@ async def chosen_inline_handler(chosen_inline_query: types.ChosenInlineResult):
     })
 
 
-@dp.inline_handler()
+@ dp.inline_handler()
 async def inline_echo(inline_query: InlineQuery):
     query = inline_query.query
 
     if not query:
         return
 
-    search_docs_res = search(query, SHOW_K_MEMES)
+    search_docs_res = await search(query, SHOW_K_MEMES)
 
     uniq_candidates_id = my_hash(query)
 
@@ -83,7 +94,6 @@ async def my_web_app():
     logging.warning(f'Hello there from {os.getpid()}')
 
     dispatcher = dp
-    webhook_path = f'/{BOT_TOKEN}'  # TODO: do we really need it?
 
     check_ip = False
     retry_after = None
@@ -103,7 +113,7 @@ async def my_web_app():
         return web_app
     else:
         executor._prepare_webhook(
-            webhook_path, request_handler, route_name, web_app)
+            WEBHOOK_PATH, request_handler, route_name, web_app)
 
         web_app = executor._web_app
         return web_app

@@ -13,3 +13,4 @@ sentence-transformers==2.1.0
 aiogram==2.15
 gunicorn==20.1.0
 nest-asyncio==1.5.4
+aiohttp==3.8.1
