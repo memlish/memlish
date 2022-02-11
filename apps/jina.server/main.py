@@ -5,10 +5,10 @@ sys.path.append('/app/loopa')  # noqa
 from jina import Document, DocumentArray, Flow, Executor, requests
 from pathlib import Path
 import argparse
-from loopa.executors.bert import SBERTEncoder
+from memlish.executors.bert import RealSBERTEncoder
 from memlish.executors.index import FaissIndexer
 from memlish.executors.docs_formatter import DocsFormatter
-from memlish.config import IMGFLIP_IMAGES_DIR, DROWN_IMAGE_DIR, JINA_SBERT_EMBEDDING_TEMPLATE_TEXT_COLLECTION
+from memlish.config import IMGFLIP_IMAGES_DIR, JINA_SBERT_EMBEDDING_TEMPLATE_TEXT_COLLECTION, DROWN_IMAGE_DIR
 from memlish.executors.text_drawer import TextDrawer
 import torch
 
@@ -44,10 +44,11 @@ def main():
     }
 
     drawer_params = {
+        "templates_dir": str(IMGFLIP_IMAGES_DIR),
         "out_path": str(DROWN_IMAGE_DIR)
     }
 
-    flow_search = Flow().add(uses=SBERTEncoder, name="encoder", uses_with=embedder_params) \
+    flow_search = Flow().add(uses=RealSBERTEncoder, name="encoder", uses_with=embedder_params) \
                         .add(uses=FaissIndexer, name="indexer", workspace="workspace", uses_with=faiss_indexer_params) \
                         .add(uses=TextDrawer, name=f"drawer", uses_with=drawer_params) \
                         .add(uses=DocsFormatter, name="formatter")

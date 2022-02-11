@@ -5,11 +5,12 @@ from PIL import ImageFont
 from pathlib import Path
 from memlish.config import FONTS_PATH
 from memlish.io.image import load_image
+from memlish.io.timelog import log_duration
 
 
 class TextDrawerBase(ABC):
     @abstractmethod
-    def add_text(self, image, text, max_width=256, max_height=256):
+    def add_text(self, image, text):
         raise NotImplementedError()
 
 
@@ -24,12 +25,8 @@ class DefaultTextDrawer(TextDrawerBase):
         self.font_size = font_size
 
     def add_text(self,
-                 image: Path,
-                 text: str,
-                 max_width=256,
-                 max_height=256):
-
-        image = load_image(image, target_size=(max_width, max_height))
+                 image: Image,
+                 text: str):
 
         return add_text_to_image(image,
                                  text,
@@ -38,6 +35,7 @@ class DefaultTextDrawer(TextDrawerBase):
                                  self.font_size)
 
 
+# @log_duration
 def add_text_to_image(img: Image,
                       text: str,
                       font,
