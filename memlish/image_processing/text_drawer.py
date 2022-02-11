@@ -28,6 +28,8 @@ class DefaultTextDrawer(TextDrawerBase):
                  image: Image,
                  text: str):
 
+        image = image.copy()
+
         return add_text_to_image(image,
                                  text,
                                  self.font,

@@ -45,7 +45,9 @@ def main():
 
     drawer_params = {
         "templates_dir": str(IMGFLIP_IMAGES_DIR),
-        "out_path": str(DROWN_IMAGE_DIR)
+        "out_path": str(DROWN_IMAGE_DIR),
+        "max_width": 256,
+        "max_height": 256
     }
 
     flow_search = Flow().add(uses=RealSBERTEncoder, name="encoder", uses_with=embedder_params) \

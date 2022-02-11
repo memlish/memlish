@@ -32,18 +32,19 @@ def my_hash(s):
 
 
 async def on_startup(dp):
-    pass
-    # # Get current webhook status
-    # webhook = await bot.get_webhook_info()
+    # Get current webhook status
+    webhook = await bot.get_webhook_info()
 
-    # # If URL is bad
-    # if webhook.url != WEBHOOK_URL:
-    #     # If URL doesnt match current - remove webhook
-    #     if not webhook.url:
-    #         await bot.delete_webhook()
+    print("Set webhooks for url: ", webhook.url)
 
-    #     # Set new URL for webhook
-    #     await bot.set_webhook(WEBHOOK_URL, certificate=open(str(WEBHOOK_SSL_CERT_PATH), 'rb'))
+    # If URL is bad
+    if webhook.url != WEBHOOK_URL:
+        # If URL doesnt match current - remove webhook
+        await bot.delete_webhook()
+
+        # Set new URL for webhook
+        output = await bot.set_webhook(WEBHOOK_URL, certificate=open(str(WEBHOOK_SSL_CERT_PATH), 'rb'))
+        print("Webhook set result: ", output)
 
 
 async def on_shutdown(dp):
