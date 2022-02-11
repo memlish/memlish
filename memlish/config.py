@@ -2,8 +2,8 @@ from pathlib import Path
 import os
 
 
-def _get_bool(key: str) -> bool:
-    return os.environ.get(key, 'False').lower() in ('true', '1', 't')
+def _get_bool(key: str, default='False') -> bool:
+    return os.environ.get(key, default).lower() in ('true', '1', 't')
 
 
 IMGFLIP_DIR = Path('/data/imgflip/')
@@ -13,11 +13,19 @@ IMGFLIP_DIR = Path('/data/imgflip/')
 class ESTag:
     INLINE_CHOICE = "INLINE_CHOICE"
     INLINE_ANSWER = "INLINE_ANSWER"
+    TIMELOG = "TIMELOG"
 
+
+WEBHOOK_SSL_CERT_PATH = Path('/certs/cert.pem')
 
 BOT_TOKEN = os.environ['BOT_TOKEN']
 SERVER_NAME = os.environ['SERVER_NAME']
 USE_POLLING = _get_bool('USE_POLLING')
+DEBUG_MODE = _get_bool('DEBUG_MODE', 'True')
+
+WEBHOOK_URL = f'https://{SERVER_NAME}/{BOT_TOKEN}'
+WEBHOOK_PATH = f'/{BOT_TOKEN}'
+
 SHOW_K_MEMES = 50
 
 # SERVER ENV VARS

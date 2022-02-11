@@ -8,7 +8,9 @@ import time
 import numpy as np
 
 from memlish.config import MONGO_EMBEDDING_DB_NAME, JINA_SBERT_EMBEDDING_TEMPLATE_TEXT_COLLECTION, MONGODB_CONNECTION_STRING
+from memlish.io.timelog import log_duration
 from loopa.executors.cache import read_all_embeddings, get_mongo_collection
+
 
 class FaissIndexer(Executor):
 
@@ -34,9 +36,10 @@ class FaissIndexer(Executor):
             connection_string, db_name, collection_name)
         self.filenames, self.embs = read_all_embeddings(
             self.collection, embedding_field_name)
-        
+
         # filename_texthash -> filename
-        self.filenames = np.array(["_".join(filename.split("_")[:-1]) for filename in self.filenames])
+        self.filenames = np.array(
+            ["_".join(filename.split("_")[:-1]) for filename in self.filenames])
 
         self.metric = faiss.METRIC_INNER_PRODUCT  # TODO: make it as parameter
 
@@ -48,6 +51,7 @@ class FaissIndexer(Executor):
         print('Index intitialized successfully!')
 
     @requests(on='/search')
+    @log_duration
     def search(
         self,
         docs: Optional['DocumentArray'] = None,
@@ -60,15 +64,14 @@ class FaissIndexer(Executor):
         top_k = int(parameters.get("top_k", 10))
         normalized = parameters.get("normalized", False)
 
-        start = time.time()
         embeddings = docs.embeddings
 
         if not normalized:
             faiss.normalize_L2(embeddings)
 
         D, I = self.index.search(embeddings, k=len(self.embs))
-        
-        for i, doc in enumerate(docs): 
+
+        for i, doc in enumerate(docs):
             # TODO: come up with better fix for shared indexer
             if doc.embedding is None:
                 continue
@@ -79,7 +82,7 @@ class FaissIndexer(Executor):
             k_id_idxs = sorted(id_idxs)[:top_k]
             top_ids = ids[k_id_idxs]
             top_scores = D[i, k_id_idxs]
-            
+
             matched_docs = []
             for _id, _score in zip(top_ids, top_scores):
                 match_doc = Document(
@@ -88,6 +91,3 @@ class FaissIndexer(Executor):
                 matched_docs.append(match_doc)
 
             doc.matches = matched_docs
-        
-        end = time.time()
-        print("end - start", end - start)

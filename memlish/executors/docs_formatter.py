@@ -2,6 +2,7 @@ from jina import DocumentArray, Executor, requests, Document
 from typing import Optional, Tuple, Sequence, Dict
 from pathlib import Path
 from memlish.config import PUBLIC_FILES_URL, IMGFLIP_DIR
+from memlish.io.timelog import log_duration
 import os
 
 
@@ -17,6 +18,7 @@ class DocsFormatter(Executor):
         self.files_url = public_files_url
 
     @requests
+    @log_duration
     def format_response(self, docs: Optional[DocumentArray], parameters: Dict = {}, **kwargs):
         if docs is None:
             return
