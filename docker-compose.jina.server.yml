@@ -2,6 +2,11 @@
 version: '3.3'
 services:
   memlish-jina-search-server:
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: 35.224.116.253:7030
+        tag: httpd.access
     mem_limit: 18g
     env_file: 
       - /home/cont/memlish.env
