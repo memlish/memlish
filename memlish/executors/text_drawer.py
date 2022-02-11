@@ -6,6 +6,7 @@ from memlish.image_processing.text_drawer import DefaultTextDrawer
 from memlish.io.timelog import log_duration
 from memlish.io.image import load_image
 from uuid import uuid4
+from PIL import Image
 
 
 class TextDrawer(Executor):
@@ -28,10 +29,13 @@ class TextDrawer(Executor):
         self.drawer = DefaultTextDrawer(font_path, font_size)
         self.out_path = Path(out_path)
         self.templates_dir = Path(templates_dir)
+
+        self.max_width, self.max_height = max_width, max_height
+
         self.image_map = {}
         for i in self.templates_dir.iterdir():
             self.image_map[i.name] = load_image(
-                i, target_size=(max_width, max_height))
+                i, target_size=(self.max_width, self.max_height))
 
         if not self.out_path.exists():
             self.out_path.mkdir(parents=True, exist_ok=True)
@@ -49,9 +53,17 @@ class TextDrawer(Executor):
         results_dir.mkdir(parents=True, exist_ok=True)
 
         for doc in docs:
+
+            transparent_foreground = Image.new(
+                'RGBA', (self.max_width, self.max_height), (255, 0, 0, 0))
+
+            text_overlay = self.drawer.add_text(
+                transparent_foreground, doc.text)
+
             for match in doc.matches:
-                result_image = self.drawer.add_text(
-                    self.image_map[Path(match.uri).name], doc.text)  # TODO: add doc.text here!
+                i_image = self.image_map[Path(match.uri).name].copy()
+                i_image.paste(text_overlay, (0, 0), text_overlay)
+
                 result_image_path = results_dir / Path(match.uri).name
-                result_image.save(result_image_path)
+                i_image.save(result_image_path)
                 match.uri = str(result_image_path)
