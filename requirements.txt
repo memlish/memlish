@@ -14,3 +14,4 @@ aiogram==2.15
 gunicorn==20.1.0
 nest-asyncio==1.5.4
 aiohttp==3.8.1
+git+https://github.com/openai/CLIP.git@40f5484c1c74edd83cb9cf687c6ab92b28d8b656

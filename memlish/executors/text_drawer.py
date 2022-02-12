@@ -1,12 +1,15 @@
 from jina import DocumentArray, Executor, requests, Document
 from typing import Optional, Tuple, Sequence, Dict
 from pathlib import Path
-from memlish.config import FONTS_PATH
+from memlish.config import FONTS_PATH, SHOW_K_MEMES
 from memlish.image_processing.text_drawer import DefaultTextDrawer
 from memlish.io.timelog import log_duration
 from memlish.io.image import load_image
 from uuid import uuid4
 from PIL import Image
+from concurrent.futures import ThreadPoolExecutor
+import asyncio
+from functools import partial
 
 
 class TextDrawer(Executor):
@@ -40,6 +43,20 @@ class TextDrawer(Executor):
         if not self.out_path.exists():
             self.out_path.mkdir(parents=True, exist_ok=True)
 
+        self.thread_pool = ThreadPoolExecutor(SHOW_K_MEMES)
+
+    def process_image(self, path: Path, image: Image):
+        # all stuff to process image here
+        image.save(path)
+
+    async def async_image_process(self, path_img: Dict):
+        loop = asyncio.get_event_loop()
+        for path, image in path_img.items():
+            await loop.run_in_executor(
+                self.thread_pool,
+                partial(self.process_image, path, image)
+            )
+
     @requests
     @log_duration
     def add_text(self, docs: Optional[DocumentArray], parameters: Dict = {}, **kwargs):
@@ -60,10 +77,17 @@ class TextDrawer(Executor):
             text_overlay = self.drawer.add_text(
                 transparent_foreground, doc.text)
 
+            path_img = {}
+
             for match in doc.matches:
                 i_image = self.image_map[Path(match.uri).name].copy()
                 i_image.paste(text_overlay, (0, 0), text_overlay)
 
                 result_image_path = results_dir / Path(match.uri).name
-                i_image.save(result_image_path)
+
+                path_img[result_image_path] = i_image
                 match.uri = str(result_image_path)
+
+            result = asyncio.create_task(self.async_image_process(path_img))
+            while result.done():
+                pass

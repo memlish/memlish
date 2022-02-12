@@ -2,7 +2,7 @@ import sys
 sys.path.append('/app')  # noqa
 sys.path.append('/app/loopa')  # noqa
 
-from jina import Document, DocumentArray, Flow, Executor, requests
+from jina import Document, DocumentArray, AsyncFlow, Executor, requests
 from pathlib import Path
 import argparse
 from memlish.executors.bert import RealSBERTEncoder
@@ -35,7 +35,7 @@ def main():
     print('args', args)
 
     embedder_params = {
-        "device": 'cuda'
+        "device": 'cpu'
     }
 
     faiss_indexer_params = {
@@ -50,10 +50,10 @@ def main():
         "max_height": 256
     }
 
-    flow_search = Flow().add(uses=RealSBERTEncoder, name="encoder", uses_with=embedder_params) \
-                        .add(uses=FaissIndexer, name="indexer", workspace="workspace", uses_with=faiss_indexer_params) \
-                        .add(uses=TextDrawer, name=f"drawer", uses_with=drawer_params) \
-                        .add(uses=DocsFormatter, name="formatter")
+    flow_search = AsyncFlow().add(uses=RealSBERTEncoder, name="encoder", uses_with=embedder_params, replicas=1) \
+        .add(uses=FaissIndexer, name="indexer", workspace="workspace", uses_with=faiss_indexer_params, replicas=1) \
+        .add(uses=TextDrawer, name=f"drawer", uses_with=drawer_params, replicas=1) \
+        .add(uses=DocsFormatter, name="formatter")
 
     flow_search.port_expose = args.port
     flow_search.protocol = 'http'
