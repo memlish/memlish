@@ -1,0 +1,14 @@
+---
+version: "3.3"
+services:
+  memlish-mongodb:
+    image : mongo
+    env_file:
+        /home/ubuntu/research.env
+    volumes:
+        - /home/ubuntu/data/mongodb_data:/data/db
+    ports:
+        - 5543:27017
+        - 8081:8081
+    restart: unless-stopped
+    container_name: memlish-mongodb
