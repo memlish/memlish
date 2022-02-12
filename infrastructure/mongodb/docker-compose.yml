@@ -2,9 +2,9 @@
 version: "3.3"
 services:
   memlish-mongodb:
-    image : mongo
+    image : mongo:4.0.28
     env_file:
-        /home/ubuntu/research.env
+        /home/ubuntu/memlish.env
     volumes:
         - /home/ubuntu/data/mongodb_data:/data/db
     ports:
