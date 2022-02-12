@@ -9,7 +9,7 @@ import numpy as np
 
 from memlish.config import MONGO_EMBEDDING_DB_NAME, JINA_SBERT_EMBEDDING_TEMPLATE_TEXT_COLLECTION, MONGODB_CONNECTION_STRING
 from memlish.io.timelog import log_duration
-from loopa.executors.cache import read_all_embeddings, get_mongo_collection
+from memlish.executors.cache import read_all_embeddings, get_mongo_collection
 
 
 class FaissIndexer(Executor):
