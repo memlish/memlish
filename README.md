@@ -5,7 +5,7 @@
 ```git clone https://github.com/memlish/memlish.git --recurse-submodules```
 
 
-## Set up memlish bot
+## Set up memlish infrastructure
 
 Complete the following steps to configure and run bot on new VM:
 
@@ -16,3 +16,11 @@ Complete the following steps to configure and run bot on new VM:
 5) [Docker setup](https://github.com/memlish/memlish/blob/setup_bot_readme/docs/docker_setup.md) 
 6) [Mongo setup](https://github.com/memlish/memlish/blob/setup_bot_readme/docs/mongo_setup.md)
 7) [Logger Anal-s setup](https://github.com/memlish/memlish/blob/setup_bot_readme/docs/logs_setup.md) 
+
+## How to run server:
+
+`docker-compose --env-file ~/memlish.env -f docker-compose.jina.server.yml up --build -d`
+
+## How to run bot:
+
+`docker-compose -f docker-compose.tgbot.yml up --build -d`
