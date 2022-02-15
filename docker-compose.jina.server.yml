@@ -5,12 +5,11 @@ services:
     logging:
       driver: "fluentd"
       options:
-        fluentd-address: 35.224.116.253:7030
+        fluentd-address: 63.35.187.56:7030
         tag: httpd.access
     mem_limit: 18g
     env_file: 
-      - /home/cont/memlish.env
-    runtime: nvidia
+      - /home/ubuntu/memlish.env
     build:
       context: .
       dockerfile: ./Dockerfile.cuda

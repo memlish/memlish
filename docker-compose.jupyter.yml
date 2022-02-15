@@ -3,8 +3,7 @@ version: '3'
 services:
   memlish-jupyter:
     mem_limit: 15gb
-    env_file: /home/cont/memlish.env
-    runtime: nvidia
+    env_file: /home/ubuntu/memlish.env
     build:
       context: .
       dockerfile: ./Dockerfile.cuda

@@ -8,7 +8,7 @@ services:
     volumes:
         - /home/ubuntu/data/mongodb_data:/data/db
     ports:
-        - 5543:27017
+        - 7543:27017
         - 8081:8081
     restart: unless-stopped
     container_name: memlish-mongodb

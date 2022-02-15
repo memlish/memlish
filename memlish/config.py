@@ -34,7 +34,7 @@ JINA_FLOW_PORT = os.environ['JINA_FLOW_PORT']
 PUBLIC_FILES_URL = f"http://{SERVER_NAME}/static_memes/"
 
 REDDIT_IMAGES_DIR = Path('/data/reddit/images/images/')
-IMGFLIP_IMAGES_DIR = IMGFLIP_DIR/'scrap_language_image_pairs_20220209/images/'
+IMGFLIP_IMAGES_DIR = IMGFLIP_DIR/'images/'
 
 MONGODB_CONNECTION_STRING = os.environ.get('MONGODB_CONNECTION_STRING', None)
 MONGO_EMBEDDING_DB_NAME = 'memlish_db'

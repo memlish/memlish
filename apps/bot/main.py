@@ -32,19 +32,22 @@ def my_hash(s):
 
 
 async def on_startup(dp):
+    if USE_POLLING:
+        return
     # Get current webhook status
     webhook = await bot.get_webhook_info()
 
-    print("Set webhooks for url: ", webhook.url)
+    print("Previous webhook url: ", webhook.url)
 
     # If URL is bad
     if webhook.url != WEBHOOK_URL:
-        # If URL doesnt match current - remove webhook
+    # If URL doesnt match current - remove webhook
         await bot.delete_webhook()
 
         # Set new URL for webhook
-        output = await bot.set_webhook(WEBHOOK_URL, certificate=open(str(WEBHOOK_SSL_CERT_PATH), 'rb'))
-        print("Webhook set result: ", output)
+        is_true = await bot.set_webhook(WEBHOOK_URL, certificate=open(str(WEBHOOK_SSL_CERT_PATH), 'rb'))
+        if is_true:
+            print("New webhook url: ", WEBHOOK_URL)
 
 
 async def on_shutdown(dp):
@@ -69,7 +72,7 @@ async def inline_echo(inline_query: InlineQuery):
 
     search_docs_res = await search(query, SHOW_K_MEMES)
 
-    uniq_candidates_id = my_hash(query)
+    uniq_candidates_id = str(uuid4())
 
     results = [
         InlineQueryResultPhoto(

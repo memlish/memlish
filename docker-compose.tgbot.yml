@@ -13,7 +13,7 @@ services:
     logging:
       driver: "fluentd"
       options:
-        fluentd-address: 35.224.116.253:7030
+        fluentd-address: 63.35.187.56:7030
         tag: httpd.access
 
     ports:
@@ -36,8 +36,8 @@ services:
       - BOT_CONTAINER_PORT=7654
     depends_on:
       - memlish
-    logging:
-      driver: none
+    # logging:
+    #   driver: none
     container_name: production_nginx
     volumes:
       - ./infrastructure/nginx/conf.d/:/nginx_confs/
