@@ -55,7 +55,7 @@ async def on_shutdown(dp):
     logging.warning('Bye!')
 
 
-@ dp.chosen_inline_handler(lambda chosen_inline_query: True)
+@dp.chosen_inline_handler(lambda chosen_inline_query: True)
 async def chosen_inline_handler(chosen_inline_query: types.ChosenInlineResult):
     print({
         'es_tag': ESTag.INLINE_CHOICE,
@@ -63,7 +63,7 @@ async def chosen_inline_handler(chosen_inline_query: types.ChosenInlineResult):
     })
 
 
-@ dp.inline_handler()
+@dp.inline_handler()
 async def inline_echo(inline_query: InlineQuery):
     query = inline_query.query
 

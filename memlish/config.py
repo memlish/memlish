@@ -31,7 +31,7 @@ SHOW_K_MEMES = 50
 # SERVER ENV VARS
 JINA_FLOW_PORT = os.environ['JINA_FLOW_PORT']
 
-PUBLIC_FILES_URL = f"http://{SERVER_NAME}/static_memes/"
+PUBLIC_FILES_URL = f"https://{SERVER_NAME}/static_memes/"
 
 REDDIT_IMAGES_DIR = Path('/data/reddit/images/images/')
 IMGFLIP_IMAGES_DIR = IMGFLIP_DIR/'images/'
