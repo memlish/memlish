@@ -3,6 +3,7 @@
 ## clone memlish repo
 
 ```bash
+cd ~/
 sudo chmod 777 src
 
 cd ~/src/

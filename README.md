@@ -7,7 +7,7 @@
 
 ## Set up memlish bot
 
-Complete the following command to configure and run bot on new VM:
+Complete the following steps to configure and run bot on new VM:
 
 1) [Configure VM](https://github.com/memlish/memlish/blob/setup_bot_readme/docs/vm_setup.md)
 2) [Env variables setup](https://github.com/memlish/memlish/blob/setup_bot_readme/docs/env_variables_setup.md)

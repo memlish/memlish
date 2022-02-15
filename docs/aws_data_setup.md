@@ -1,6 +1,6 @@
 # AWS Setup and sync data
 
-## AWS Setup:
+## AWS setup
 
 ```bash
 sudo apt update
