@@ -16,4 +16,3 @@ Complete the following steps to configure and run bot on new VM:
 5) [Docker setup](https://github.com/memlish/memlish/blob/setup_bot_readme/docs/docker_setup.md) 
 6) [Mongo setup](https://github.com/memlish/memlish/blob/setup_bot_readme/docs/mongo_setup.md)
 7) [Logger Anal-s setup](https://github.com/memlish/memlish/blob/setup_bot_readme/docs/logs_setup.md) 
-8) [DNS setup](https://github.com/memlish/memlish/blob/setup_bot_readme/docs/dns_setup.md)
