@@ -4,27 +4,16 @@
 
 ```git clone https://github.com/memlish/memlish.git --recurse-submodules```
 
-## What should be up and run:
 
-To run bot you should run such services:
+## Set up memlish bot
 
-1) Run jina server: `docker-compose.jina.server.yml`
-2) Run bot: `docker-compose.tgbot.yml`
+Complete the following command to configure and run bot on new VM:
 
-## How to run server:
-
-`docker-compose --env-file ~/memlish.env -f docker-compose.jina.server.yml up --build -d`
-
-## How to run bot:
-
-`docker-compose -f docker-compose.tgbot.yml up --build -d`
-
-## memlish.env
-
-```
-MONGODB_CONNECTION_STRING=<mongo_connection_string>
-BOT_TOKEN=<telegram_bot_token>
-USE_POLLING=True
-SERVER_NAME=<public_dns_domain>
-JINA_FLOW_PORT=7070
-```
+1) Configure VM # vm_setup.md
+2) Env variables setup # env_variables_setup.md
+3) AWS setup and sync data # aws_data_setup.md
+4) Clone Repo # repo_setup.md
+5) Docker setup # docker_setup.md
+6) Mongo setup # mongo_setup.md
+7) Logger Anal-s setup # logs_setup.md
+8) DNS setup # dns_setup.md
