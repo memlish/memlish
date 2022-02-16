@@ -63,16 +63,10 @@ async def send_welcome(message: types.Message):
 
 @dp.chosen_inline_handler(lambda chosen_inline_query: True)
 async def chosen_inline_handler(chosen_inline_query: types.ChosenInlineResult):
-    if chosen_inline_query.result_id == ESTag.INSTRUCTION:
-        print({
-            'es_tag': ESTag.INSTRUCTION,
-            'update': str(chosen_inline_query),
-        })
-    else:
-        print({
-            'es_tag': ESTag.INLINE_CHOICE,
-            'update': str(chosen_inline_query),
-        })
+    print({
+        'es_tag': ESTag.INLINE_CHOICE,
+        'update': str(chosen_inline_query),
+    })
 
 
 @dp.inline_handler()
@@ -107,7 +101,7 @@ async def inline_echo(inline_query: InlineQuery):
     })
 
     # don't forget to set cache_time=1 for testing (default is 300s or 5m)
-    return AnswerInlineQuery(inline_query.id, results=results, cache_time=0.1, is_personal=True)
+    return AnswerInlineQuery(inline_query.id, results=results, cache_time=0.5, is_personal=True)
 
 
 async def my_web_app():
