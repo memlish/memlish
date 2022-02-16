@@ -16,6 +16,8 @@ class ESTag:
     TIMELOG = "TIMELOG"
 
 
+MEMLISH_INSTRUCTION_VIDEO_URL = "https://s3.eu-west-1.amazonaws.com/memlish.head.public/memlish/memlish_instruction.mp4"
+
 WEBHOOK_SSL_CERT_PATH = Path('/certs/cert.pem')
 
 BOT_TOKEN = os.environ['BOT_TOKEN']

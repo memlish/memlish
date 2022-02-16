@@ -14,7 +14,7 @@ services:
       driver: "fluentd"
       options:
         fluentd-address: ec2-34-245-85-126.eu-west-1.compute.amazonaws.com:7030
-        tag: httpd.access
+        tag: memlish.bot
 
     ports:
       - "7654:7654"

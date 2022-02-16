@@ -6,10 +6,10 @@ services:
       driver: "fluentd"
       options:
         fluentd-address: ec2-34-245-85-126.eu-west-1.compute.amazonaws.com:7030
-        tag: httpd.access
+        tag: memlish.server
     mem_limit: 18g
     env_file: 
-      - /home/ubuntu/memlish.env
+      - ~/memlish.env
     build:
       context: .
       dockerfile: ./Dockerfile.cuda
