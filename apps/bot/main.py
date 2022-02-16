@@ -101,7 +101,7 @@ async def inline_echo(inline_query: InlineQuery):
     })
 
     # don't forget to set cache_time=1 for testing (default is 300s or 5m)
-    return AnswerInlineQuery(inline_query.id, results=results, cache_time=0.1, is_personal=True)
+    return AnswerInlineQuery(inline_query.id, results=results, cache_time=0.5, is_personal=True)
 
 
 async def my_web_app():
