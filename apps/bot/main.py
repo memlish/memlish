@@ -63,16 +63,10 @@ async def send_welcome(message: types.Message):
 
 @dp.chosen_inline_handler(lambda chosen_inline_query: True)
 async def chosen_inline_handler(chosen_inline_query: types.ChosenInlineResult):
-    if chosen_inline_query.result_id == ESTag.INSTRUCTION:
-        print({
-            'es_tag': ESTag.INSTRUCTION,
-            'update': str(chosen_inline_query),
-        })
-    else:
-        print({
-            'es_tag': ESTag.INLINE_CHOICE,
-            'update': str(chosen_inline_query),
-        })
+    print({
+        'es_tag': ESTag.INLINE_CHOICE,
+        'update': str(chosen_inline_query),
+    })
 
 
 @dp.inline_handler()

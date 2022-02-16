@@ -31,6 +31,7 @@ WEBHOOK_PATH = f'/{BOT_TOKEN}'
 SHOW_K_MEMES = 50
 
 # SERVER ENV VARS
+AWS_REGION = 'eu-west-1'
 JINA_FLOW_PORT = os.environ['JINA_FLOW_PORT']
 
 PUBLIC_FILES_URL = f"https://{SERVER_NAME}/static_memes/"

@@ -75,7 +75,7 @@ class TextDrawer(Executor):
                 'RGBA', (self.max_width, self.max_height), (255, 0, 0, 0))
 
             text_overlay = self.drawer.add_text(
-                transparent_foreground, doc.text)
+                transparent_foreground, doc.tags["text_to_draw"])
 
             path_img = {}
 
