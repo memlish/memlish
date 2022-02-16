@@ -5,7 +5,7 @@ services:
     logging:
       driver: "fluentd"
       options:
-        fluentd-address: 63.35.187.56:7030
+        fluentd-address: ec2-34-245-85-126.eu-west-1.compute.amazonaws.com:7030
         tag: httpd.access
     mem_limit: 18g
     env_file: 
