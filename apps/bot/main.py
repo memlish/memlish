@@ -9,14 +9,14 @@ from aiogram import Bot, types, executor
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram import Bot, Dispatcher
 from aiogram.dispatcher.webhook import SendMessage,  AnswerInlineQuery
-from aiogram.types import InlineQuery, InlineQueryResultPhoto
+from aiogram.types import InlineQuery, InlineQueryResultPhoto, InlineQueryResultArticle, InputTextMessageContent, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.executor import set_webhook, DEFAULT_ROUTE_NAME, Executor, _setup_callbacks
 from aiogram.dispatcher.webhook import WebhookRequestHandler
 
 import hashlib
 
 from .search_service import search
-from memlish.config import BOT_TOKEN, USE_POLLING, SHOW_K_MEMES, ESTag, WEBHOOK_SSL_CERT_PATH, WEBHOOK_URL, WEBHOOK_PATH
+from memlish.config import BOT_TOKEN, USE_POLLING, SHOW_K_MEMES, ESTag, WEBHOOK_SSL_CERT_PATH, WEBHOOK_URL, WEBHOOK_PATH, MEMLISH_INSTRUCTION_VIDEO_URL
 
 
 logging.basicConfig(level=logging.INFO,
@@ -32,10 +32,12 @@ def my_hash(s):
 
 
 async def on_startup(dp):
+    if USE_POLLING:
+        return
     # Get current webhook status
     webhook = await bot.get_webhook_info()
 
-    print("Set webhooks for url: ", webhook.url)
+    print("Previous webhook url: ", webhook.url)
 
     # If URL is bad
     if webhook.url != WEBHOOK_URL:
@@ -43,8 +45,9 @@ async def on_startup(dp):
         await bot.delete_webhook()
 
         # Set new URL for webhook
-        output = await bot.set_webhook(WEBHOOK_URL, certificate=open(str(WEBHOOK_SSL_CERT_PATH), 'rb'))
-        print("Webhook set result: ", output)
+        is_true = await bot.set_webhook(WEBHOOK_URL, certificate=open(str(WEBHOOK_SSL_CERT_PATH), 'rb'))
+        if is_true:
+            print("New webhook url: ", WEBHOOK_URL)
 
 
 async def on_shutdown(dp):
@@ -52,7 +55,13 @@ async def on_shutdown(dp):
     logging.warning('Bye!')
 
 
-@ dp.chosen_inline_handler(lambda chosen_inline_query: True)
+@dp.message_handler(commands=['start', 'help'])
+async def send_welcome(message: types.Message):
+    await message.answer("Hi🖐!\nMemlish🤖 will find🔎 suitable memes🪄 for your query.\nCheck video🎥 example below!")
+    await message.answer_animation(MEMLISH_INSTRUCTION_VIDEO_URL)
+
+
+@dp.chosen_inline_handler(lambda chosen_inline_query: True)
 async def chosen_inline_handler(chosen_inline_query: types.ChosenInlineResult):
     print({
         'es_tag': ESTag.INLINE_CHOICE,
@@ -60,16 +69,19 @@ async def chosen_inline_handler(chosen_inline_query: types.ChosenInlineResult):
     })
 
 
-@ dp.inline_handler()
+@dp.inline_handler()
 async def inline_echo(inline_query: InlineQuery):
     query = inline_query.query
 
+    switch_pm_text = "Video tutorial"
+    switch_pm_parameter = "tutorial"
+
     if not query:
-        return
+        return AnswerInlineQuery(inline_query.id, results=[], switch_pm_text=switch_pm_text, switch_pm_parameter=switch_pm_parameter, cache_time=300, is_personal=True)
 
     search_docs_res = await search(query, SHOW_K_MEMES)
 
-    uniq_candidates_id = my_hash(query)
+    uniq_candidates_id = str(uuid4())
 
     results = [
         InlineQueryResultPhoto(
@@ -81,6 +93,7 @@ async def inline_echo(inline_query: InlineQuery):
         )
         for i, match in enumerate(search_docs_res)
     ]
+
     print({
         'es_tag': ESTag.INLINE_ANSWER,
         'update': str(inline_query),
@@ -88,7 +101,7 @@ async def inline_echo(inline_query: InlineQuery):
     })
 
     # don't forget to set cache_time=1 for testing (default is 300s or 5m)
-    return AnswerInlineQuery(inline_query.id, results=results, cache_time=1, is_personal=True)
+    return AnswerInlineQuery(inline_query.id, results=results, cache_time=0.5, is_personal=True)
 
 
 async def my_web_app():

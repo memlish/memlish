@@ -16,6 +16,8 @@ class ESTag:
     TIMELOG = "TIMELOG"
 
 
+MEMLISH_INSTRUCTION_VIDEO_URL = "https://s3.eu-west-1.amazonaws.com/memlish.head.public/memlish/memlish_instruction.mp4"
+
 WEBHOOK_SSL_CERT_PATH = Path('/certs/cert.pem')
 
 BOT_TOKEN = os.environ['BOT_TOKEN']
@@ -29,12 +31,13 @@ WEBHOOK_PATH = f'/{BOT_TOKEN}'
 SHOW_K_MEMES = 50
 
 # SERVER ENV VARS
+AWS_REGION = 'eu-west-1'
 JINA_FLOW_PORT = os.environ['JINA_FLOW_PORT']
 
-PUBLIC_FILES_URL = f"http://{SERVER_NAME}/static_memes/"
+PUBLIC_FILES_URL = f"https://{SERVER_NAME}/static_memes/"
 
 REDDIT_IMAGES_DIR = Path('/data/reddit/images/images/')
-IMGFLIP_IMAGES_DIR = IMGFLIP_DIR/'scrap_language_image_pairs_20220209/images/'
+IMGFLIP_IMAGES_DIR = IMGFLIP_DIR/'images/'
 
 MONGODB_CONNECTION_STRING = os.environ.get('MONGODB_CONNECTION_STRING', None)
 MONGO_EMBEDDING_DB_NAME = 'memlish_db'

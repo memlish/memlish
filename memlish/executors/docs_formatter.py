@@ -6,7 +6,26 @@ from memlish.io.timelog import log_duration
 import os
 
 
-class DocsFormatter(Executor):
+class DocPreFormatter(Executor):
+
+    def __init__(
+        self,
+        *args,
+        **kwargs,
+    ):
+        super().__init__(*args, **kwargs)
+
+    @requests
+    @log_duration
+    def format(self, docs: Optional[DocumentArray], parameters: Dict = {}, **kwargs):
+        if docs is None:
+            return
+
+        for doc in docs:
+            doc.tags["text_to_draw"] = doc.text
+
+
+class DocPostFormatter(Executor):
 
     def __init__(
         self,
