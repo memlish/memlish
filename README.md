@@ -27,4 +27,6 @@ BOT_TOKEN=<telegram_bot_token>
 USE_POLLING=True
 SERVER_NAME=<public_dns_domain>
 JINA_FLOW_PORT=7070
+AWS_ACCESS_KEY_ID=<>
+AWS_SECRET_ACCESS_KEY=<>
 ```
