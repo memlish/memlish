@@ -4,6 +4,7 @@ from jina import DocumentArray, Executor, requests
 import torch
 from torch import nn
 from PIL import Image
+from memlish.io.timelog import log_duration
 
 
 class OpenAICLIPTextEncoder(Executor):
@@ -35,6 +36,7 @@ class OpenAICLIPTextEncoder(Executor):
         self.model, _ = clip.load(pretrained_model_name_or_path, device=device)
 
     @requests
+    @log_duration
     def get_embeddings(self, docs: Optional[DocumentArray], **kwargs):
         if docs is None:
             return
@@ -90,6 +92,7 @@ class OpenAICLIPImageEncoder(Executor):
             pretrained_model_name_or_path, device=device)
 
     @requests
+    @log_duration
     def get_embeddings(self, docs: Optional[DocumentArray], **kwargs):
         if docs is None:
             return
