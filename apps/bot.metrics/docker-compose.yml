@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+    postgres:
+        image: postgres
+        environment:
+            - POSTGRES_USER=airflow
+            - POSTGRES_PASSWORD=airflow
+            - POSTGRES_DB=airflow
+    scheduler:
+        build:
+            context: .
+            dockerfile: ./Dockerfile.webserver
+        command: scheduler
+        restart: on-failure
+        depends_on:
+            - postgres
+        env_file:
+            - .env
+        volumes:
+            - ./dags:/opt/airflow/dags
+            - ./logs:/opt/airflow/logs
+    webserver:
+        build:
+            context: .
+            dockerfile: ./Dockerfile.webserver
+        entrypoint: ./scripts/entrypoint.sh
+        restart: on-failure
+        depends_on:
+            - postgres
+            - scheduler
+        env_file:
+            - .env
+        volumes:
+            - ./dags:/opt/airflow/dags
+            - ./logs:/opt/airflow/logs
+            - ./scripts:/opt/airflow/scripts
+            - ./notebooks:/opt/airflow/notebooks
+        ports:
+            - "7865:8080"
