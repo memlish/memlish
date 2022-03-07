@@ -4,7 +4,7 @@
 lsblk
 ```
 
-![lsblk output](https://github.com/memlish/memlish/blob/setup_bot_readme/docs/images/lsblk_output.png)
+![lsblk output](https://github.com/memlish/memlish/blob/main/docs/images/lsblk_output.png)
 
 
 ```bash
@@ -16,7 +16,7 @@ sudo mkdir /mnt/sdd/src
 ln -s /mnt/sdd/src src
 ```
 
-![mount drive](https://github.com/memlish/memlish/blob/setup_bot_readme/docs/images/after_mount_ls.png)
+![mount drive](https://github.com/memlish/memlish/blob/main/docs/images/after_mount_ls.png)
 
 change '/mnt/sdd/src' permissions
 ```bash
