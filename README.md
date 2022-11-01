@@ -1,5 +1,5 @@
 # memlish
-
+sudo docker-compose --env-file ~/memlish.env -f docker-compose.jupyter.yml up --build -d
 ## Pull:
 
 ```git clone https://github.com/memlish/memlish.git --recurse-submodules```
@@ -31,3 +31,5 @@ openssl req -newkey rsa:2048 -sha256 -nodes -keyout private.key -x509 -days 3650
 ## How to run bot:
 
 `docker-compose -f docker-compose.tgbot.yml up --build -d`
+
+docker-compose --env-file ~/memlish.env -f docker-compose.jupyter.yml up --build -d

@@ -38,8 +38,10 @@ class FaissIndexer(Executor):
             self.collection, embedding_field_name)
 
         # filename_texthash -> filename
-        self.filenames = np.array(
-            ["_".join(filename.split("_")[:-1]) for filename in self.filenames])
+        # self.filenames = np.array(
+        #     ["_".join(filename.split("_")[:-1]) for filename in self.filenames])
+        
+        self.filenames = np.array([filename for filename in self.filenames]) # TODO: This is possibly shit fix.
 
         self.metric = faiss.METRIC_INNER_PRODUCT  # TODO: make it as parameter
 

@@ -15,7 +15,7 @@ class TextDrawerBase(ABC):
 
 
 class DefaultTextDrawer(TextDrawerBase):
-    def __init__(self, font_path=FONTS_PATH/'impact.ttf', font_size=21):
+    def __init__(self, font_path=FONTS_PATH/'impact.ttf', font_size=21, max_width=256, max_height=256):
         super().__init__()
 
         font_path = str(font_path)
@@ -23,6 +23,8 @@ class DefaultTextDrawer(TextDrawerBase):
         self.font = ImageFont.truetype(font_path, font_size)
         self.font_path = font_path
         self.font_size = font_size
+        self.max_width = max_width
+        self.max_height = max_height
 
     def add_text(self,
                  image: Image,
@@ -34,7 +36,9 @@ class DefaultTextDrawer(TextDrawerBase):
                                  text,
                                  self.font,
                                  self.font_path,
-                                 self.font_size)
+                                 self.font_size,
+                                 self.max_width,
+                                 self.max_height)
 
 
 # @log_duration

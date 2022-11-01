@@ -29,7 +29,7 @@ class TextDrawer(Executor):
         out_path - directory where drawer will store results. Note that uri in docs will chance on this folder!
         """
         super().__init__(*args, **kwargs)
-        self.drawer = DefaultTextDrawer(font_path, font_size)
+        self.drawer = DefaultTextDrawer(font_path, font_size, max_width=max_width, max_height=max_height)
         self.out_path = Path(out_path)
         self.templates_dir = Path(templates_dir)
 
@@ -80,6 +80,7 @@ class TextDrawer(Executor):
             path_img = {}
 
             for match in doc.matches:
+                print(match.uri)
                 i_image = self.image_map[Path(match.uri).name].copy()
                 i_image.paste(text_overlay, (0, 0), text_overlay)
 

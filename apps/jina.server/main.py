@@ -5,7 +5,7 @@ sys.path.append('/app/loopa')  # noqa
 from jina import Document, DocumentArray, AsyncFlow, Executor, requests
 from pathlib import Path
 import argparse
-from memlish.executors.bert import RealSBERTEncoder
+from memlish.executors.openai_clip import OpenAICLIPTextEncoder
 from memlish.executors.index import FaissIndexer
 from memlish.executors.docs_formatter import DocPostFormatter, DocPreFormatter
 from memlish.executors.transalator import AwsTranslator
@@ -47,13 +47,14 @@ def main():
     drawer_params = {
         "templates_dir": str(IMGFLIP_IMAGES_DIR),
         "out_path": str(DROWN_IMAGE_DIR),
-        "max_width": 256,
-        "max_height": 256
+        "max_width": 512,
+        "max_height": 512,
+        "font_size": 42
     }
 
     flow_search = AsyncFlow().add(uses=DocPreFormatter, name="pre_formatter") \
         .add(uses=AwsTranslator, name="tranlator") \
-        .add(uses=RealSBERTEncoder, name="encoder", uses_with=embedder_params, replicas=1) \
+        .add(uses=OpenAICLIPTextEncoder, name="encoder", uses_with=embedder_params, replicas=1) \
         .add(uses=FaissIndexer, name="indexer", workspace="workspace", uses_with=faiss_indexer_params, replicas=1) \
         .add(uses=TextDrawer, name=f"drawer", uses_with=drawer_params, replicas=1) \
         .add(uses=DocPostFormatter, name="post_formatter")

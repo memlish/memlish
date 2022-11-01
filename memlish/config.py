@@ -44,6 +44,6 @@ MONGO_EMBEDDING_DB_NAME = 'memlish_db'
 
 DROWN_IMAGE_DIR = IMGFLIP_DIR / 'drown_images'
 
-JINA_SBERT_EMBEDDING_TEMPLATE_TEXT_COLLECTION = "02_v1_images_sbert_all_mpnet_base_v2_imgflip_template_100k_embeddings"
+JINA_SBERT_EMBEDDING_TEMPLATE_TEXT_COLLECTION = "02_lclip_imgflip_template_image_100k_embeddings"
 
 FONTS_PATH = Path('/app/memlish/image_processing/fonts')

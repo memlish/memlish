@@ -30,4 +30,5 @@ class AwsTranslator(Executor):
             if lang != 'en':
                 translator_res = self.translator.translate_text(
                     Text=doc.text, SourceLanguageCode='auto', TargetLanguageCode="en")
+                print(translator_res)
                 doc.text = translator_res.get('TranslatedText')
