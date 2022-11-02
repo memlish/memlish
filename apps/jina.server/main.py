@@ -47,9 +47,9 @@ def main():
     drawer_params = {
         "templates_dir": str(IMGFLIP_IMAGES_DIR),
         "out_path": str(DROWN_IMAGE_DIR),
-        "max_width": 512,
-        "max_height": 512,
-        "font_size": 42
+        "max_width": 256,
+        "max_height": 256,
+        "font_size": 21
     }
 
     flow_search = AsyncFlow().add(uses=DocPreFormatter, name="pre_formatter") \
