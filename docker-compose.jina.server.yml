@@ -2,11 +2,11 @@
 version: '3.3'
 services:
   memlish-jina-search-server:
-    # logging:
-    #   driver: "fluentd"
-    #   options:
-    #     fluentd-address: ec2-34-245-85-126.eu-west-1.compute.amazonaws.com:7030
-    #     tag: memlish.server
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: ec2-3-251-68-86.eu-west-1.compute.amazonaws.com:7030
+        tag: memlish.server
     mem_limit: 18g
     env_file: 
       - ~/memlish.env

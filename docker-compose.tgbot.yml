@@ -10,11 +10,11 @@ services:
     restart: unless-stopped
     container_name: memlish
 
-    # logging:
-    #   driver: "fluentd"
-    #   options:
-    #     fluentd-address: ec2-34-245-85-126.eu-west-1.compute.amazonaws.com:7030
-    #     tag: memlish.bot
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: ec2-3-251-68-86.eu-west-1.compute.amazonaws.com:7030
+        tag: memlish.bot
 
     ports:
       - "7654:7654"
