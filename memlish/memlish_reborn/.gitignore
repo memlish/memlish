@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+.DS_Store
+
+data/templates/*
+!data/templates/.gitkeep
+data/embeddings.npy
+data/metadata.json
+data/file_ids.json
+data/rendered/
