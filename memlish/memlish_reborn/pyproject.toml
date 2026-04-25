@@ -5,6 +5,7 @@ description = "Telegram inline bot that overlays text on semantically-matched me
 requires-python = ">=3.11,<3.13"
 dependencies = [
     "aiogram>=3.13,<4",
+    "aiohttp>=3.9",
     "pillow>=10.4",
     "numpy>=1.26,<3",
     "torch>=2.2",

@@ -11,13 +11,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 COPY pyproject.toml ./
-RUN pip install --upgrade pip && pip install .
-
 COPY src ./src
 COPY scripts ./scripts
+RUN pip install --upgrade pip && pip install .
 
 # Index + templates are mounted at runtime under /data
 ENV MEMLISH_DATA_DIR=/data
 VOLUME ["/data"]
+
+EXPOSE 7654
 
 CMD ["python", "-m", "memlish_reborn.bot"]

@@ -1,0 +1,17 @@
+services:
+  memlish_reborn:
+    build:
+      context: ./memlish/memlish_reborn
+    container_name: memlish_reborn
+    env_file: ./memlish/memlish_reborn/.env
+    environment:
+      - USE_POLLING=false
+      - WEBHOOK_HOST=https://turtle.manifoldsync.xyz
+      - WEBAPP_HOST=0.0.0.0
+      - WEBAPP_PORT=7654
+      - MEMLISH_DELIVERY=url
+    volumes:
+      - ./memlish/memlish_reborn/data:/data
+    ports:
+      - "127.0.0.1:9001:7654"
+    restart: unless-stopped

@@ -8,9 +8,5 @@ dist/
 build/
 .DS_Store
 
-data/templates/*
+data/
 !data/templates/.gitkeep
-data/embeddings.npy
-data/metadata.json
-data/file_ids.json
-data/rendered/
